@@ -166,4 +166,84 @@ Example:
 }
 ```
 
+# User Profile Endpoint Documentation
+
+## Endpoint
+`GET /users/profile`
+
+## Description
+This endpoint allows an authenticated user to retrieve their profile information.
+
+## Request Headers
+The request should include the following header:
+
+- `Authorization`: A valid JWT token (required).
+
+## Responses
+
+### Success
+- **Status Code**: `200 OK`
+- **Body**: A JSON object containing the user's profile information.
+
+Example:
+```json
+{
+    "_id": "user_id_here",
+    "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+    },
+    "email": "user@example.com",
+    "socketId": null
+}
+```
+
+### Unauthorized
+- **Status Code**: `401 Unauthorized`
+- **Body**: A JSON object containing an error message.
+
+Example:
+```json
+{
+    "message": "Unauthorized"
+}
+```
+
+# User Logout Endpoint Documentation
+
+## Endpoint
+`GET /users/logout`
+
+## Description
+This endpoint allows an authenticated user to log out and blackelist the token provided in cookie or headers
+
+## Request Headers
+The request should include the following header:
+
+- `Authorization`: A valid JWT token (required).
+
+## Responses
+
+### Success
+- **Status Code**: `200 OK`
+- **Body**: A JSON object containing a success message.
+
+Example:
+```json
+{
+    "message": "Logged out successfully"
+}
+```
+
+### Unauthorized
+- **Status Code**: `401 Unauthorized`
+- **Body**: A JSON object containing an error message.
+
+Example:
+```json
+{
+    "message": "Unauthorized"
+}
+```
+
 
