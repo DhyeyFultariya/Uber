@@ -88,4 +88,82 @@ Example:
 }
 ```
 
+# User Login Endpoint Documentation
+
+## Endpoint
+`POST /users/login`
+
+## Description
+This endpoint allows a user to log in by providing their email and password.
+
+## Request Body
+The request body should be a JSON object containing the following fields:
+
+- `email`: A valid email address (required).
+- `password`: A password, at least 6 characters long (required).
+
+Example:
+```json
+{
+    "email": "user@example.com",
+    "password": "password123"
+}
+```
+
+## Responses
+
+### Success
+- **Status Code**: `200 OK`
+- **Body**: A JSON object containing the user's token and user details.
+
+Example:
+```json
+{
+    "token": "jwt_token_here",
+    "user": {
+        "_id": "user_id_here",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "user@example.com",
+        "password": "hashed-password",
+        "socketId": null
+    }
+}
+```
+
+### Validation Errors
+- **Status Code**: `400 Bad Request`
+- **Body**: A JSON object containing an array of error messages.
+
+Example:
+```json
+{
+    "errors": [
+        {
+            "msg": "Please enter a valid email",
+            "param": "email",
+            "location": "body"
+        },
+        {
+            "msg": "Password must be at least 6 characters long",
+            "param": "password",
+            "location": "body"
+        }
+    ]
+}
+```
+
+### Invalid Credentials
+- **Status Code**: `401 Unauthorized`
+- **Body**: A JSON object containing an error message.
+
+Example:
+```json
+{
+    "message": "Invalid email or password"
+}
+```
+
 
