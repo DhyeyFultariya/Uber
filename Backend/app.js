@@ -8,7 +8,10 @@ const app = express();
 const cookieParser = require('cookie-parser');
 
 const connecToDb = require('./db/db'); // Connect to MongoDB
+
+// Routes 
 const userRoutes = require('./routes/user.routes');
+const captainRoutes = require('./routes/captain.routes');
 
 connecToDb();
 
@@ -23,6 +26,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', userRoutes); 
+
+app.use('/captains', captainRoutes); 
 
 
 

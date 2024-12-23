@@ -215,7 +215,7 @@ Example:
 `GET /users/logout`
 
 ## Description
-This endpoint allows an authenticated user to log out and blackelist the token provided in cookie or headers
+This endpoint allows an authenticated user to log out and blacklist the token provided in cookie or headers.
 
 ## Request Headers
 The request should include the following header:
@@ -243,6 +243,128 @@ Example:
 ```json
 {
     "message": "Unauthorized"
+}
+```
+
+# Captain Registration Endpoint Documentation
+
+## Endpoint
+`POST /captains/register`
+
+## Description
+This endpoint allows a new captain to register by providing their full name, email, password, and vehicle details.
+
+## Request Body
+The request body should be a JSON object containing the following fields:
+
+- `fullname`: An object containing:
+    - `firstname`: The captain's first name, at least 3 characters long (required).
+    - `lastname`: The captain's last name, at least 3 characters long (optional).
+- `email`: A valid email address (required).
+- `password`: A password, at least 6 characters long (required).
+- `vehicle`: An object containing:
+    - `color`: The vehicle's color, at least 3 characters long (required).
+    - `plate`: The vehicle's plate number, at least 3 characters long (required).
+    - `capasity`: The vehicle's capacity, must be a number (required).
+    - `vehicleType`: The type of vehicle, must be one of 'car', 'auto', or 'motorcycle' (required).
+
+Example:
+```json
+{
+    "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+    },
+    "email": "captain@example.com",
+    "password": "password123",
+    "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capasity": 4,
+        "vehicleType": "car"
+    }
+}
+```
+
+## Responses
+
+### Success
+- **Status Code**: `201 Created`
+- **Body**: A JSON object containing the captain's details.
+
+Example:
+```json
+{
+    "_id": "captain_id_here",
+    "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+    },
+    "email": "captain@example.com",
+    "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capasity": 4,
+        "vehicleType": "car"
+    }
+}
+```
+
+### Validation Errors
+- **Status Code**: `400 Bad Request`
+- **Body**: A JSON object containing an array of error messages.
+
+Example:
+```json
+{
+    "errors": [
+        {
+            "msg": "First name must be at least 3 characters long",
+            "param": "fullname.firstname",
+            "location": "body"
+        },
+        {
+            "msg": "Please enter a valid email",
+            "param": "email",
+            "location": "body"
+        },
+        {
+            "msg": "Password must be at least 6 characters long",
+            "param": "password",
+            "location": "body"
+        },
+        {
+            "msg": "Color must be at least 3 characters long",
+            "param": "vehicle.color",
+            "location": "body"
+        },
+        {
+            "msg": "Plate must be at least 3 characters long",
+            "param": "vehicle.plate",
+            "location": "body"
+        },
+        {
+            "msg": "Capasity must be a number",
+            "param": "vehicle.capasity",
+            "location": "body"
+        },
+        {
+            "msg": "Invalid vehicle type",
+            "param": "vehicle.vehicleType",
+            "location": "body"
+        }
+    ]
+}
+```
+
+### Missing Fields
+- **Status Code**: `400 Bad Request`
+- **Body**: A JSON object containing an error message.
+
+Example:
+```json
+{
+    "error": "Please fill in all fields"
 }
 ```
 
