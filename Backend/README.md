@@ -368,4 +368,171 @@ Example:
 }
 ```
 
+# Captain Login Endpoint Documentation
+
+## Endpoint
+`POST /captains/login`
+
+## Description
+This endpoint allows a captain to log in by providing their email and password.
+
+## Request Body
+The request body should be a JSON object containing the following fields:
+
+- `email`: A valid email address (required).
+- `password`: A password, at least 6 characters long (required).
+
+Example:
+```json
+{
+    "email": "captain@example.com",
+    "password": "password123"
+}
+```
+
+## Responses
+
+### Success
+- **Status Code**: `200 OK`
+- **Body**: A JSON object containing the captain's token and details.
+
+Example:
+```json
+{
+    "token": "jwt_token_here",
+    "captain": {
+        "_id": "captain_id_here",
+        "fullname": {
+            "firstname": "Jane",
+            "lastname": "Doe"
+        },
+        "email": "captain@example.com",
+        "vehicle": {
+            "color": "red",
+            "plate": "ABC123",
+            "capasity": 4,
+            "vehicleType": "car"
+        }
+    }
+}
+```
+
+### Validation Errors
+- **Status Code**: `400 Bad Request`
+- **Body**: A JSON object containing an array of error messages.
+
+Example:
+```json
+{
+    "errors": [
+        {
+            "msg": "Please enter a valid email",
+            "param": "email",
+            "location": "body"
+        },
+        {
+            "msg": "Password must be at least 6 characters long",
+            "param": "password",
+            "location": "body"
+        }
+    ]
+}
+```
+
+### Invalid Credentials
+- **Status Code**: `401 Unauthorized`
+- **Body**: A JSON object containing an error message.
+
+Example:
+```json
+{
+    "message": "Invalid email or password"
+}
+```
+
+# Captain Profile Endpoint Documentation
+
+## Endpoint
+`GET /captains/profile`
+
+## Description
+This endpoint allows an authenticated captain to retrieve their profile information.
+
+## Request Headers
+The request should include the following header:
+
+- `Authorization`: A valid JWT token (required).
+
+## Responses
+
+### Success
+- **Status Code**: `200 OK`
+- **Body**: A JSON object containing the captain's profile information.
+
+Example:
+```json
+{
+    "_id": "captain_id_here",
+    "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+    },
+    "email": "captain@example.com",
+    "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capasity": 4,
+        "vehicleType": "car"
+    }
+}
+```
+
+### Unauthorized
+- **Status Code**: `401 Unauthorized`
+- **Body**: A JSON object containing an error message.
+
+Example:
+```json
+{
+    "message": "Unauthorized"
+}
+```
+
+# Captain Logout Endpoint Documentation
+
+## Endpoint
+`GET /captains/logout`
+
+## Description
+This endpoint allows an authenticated captain to log out and blacklist the token provided in cookie or headers.
+
+## Request Headers
+The request should include the following header:
+
+- `Authorization`: A valid JWT token (required).
+
+## Responses
+
+### Success
+- **Status Code**: `200 OK`
+- **Body**: A JSON object containing a success message.
+
+Example:
+```json
+{
+    "message": "Logged out successfully"
+}
+```
+
+### Unauthorized
+- **Status Code**: `401 Unauthorized`
+- **Body**: A JSON object containing an error message.
+
+Example:
+```json
+{
+    "message": "Unauthorized"
+}
+```
+
 
