@@ -46,7 +46,7 @@ const UserLogin = () => {
             placeholder="enter your Password"
           />
           <button className="bg-[#111] text-white font-semibold mb-2 rounded px-4 py-2 w-full text-lg placeholder:text-base">
-            Login
+            Login as User
           </button>
         </form>
         <p className="text-center">
