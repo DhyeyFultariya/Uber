@@ -1,30 +1,61 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { CaptainDataContext } from "../Context/CaptainContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CaptainSignup = () => {
+
+  const navigate = useNavigate();
 
    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [userData, setUserData] = useState({});
+    
+    const [vehicleColor, setVehicleColor] = useState('');
+    const [vehiclePlate, setVehiclePlate] = useState('');
+    const [vehicleCapacity, setVehicleCapacity] = useState('');
+    const [vehicleType, setVehicleType] = useState('');
 
-    const submitHandler = (e) => {
+    const { captain, setCaptain } = React.useContext(CaptainDataContext);
+
+    const submitHandler = async (e) => {
       e.preventDefault();
   
-      setUserData({
-        fullName: {
-          firstName: firstName,
-          lastName: lastName
+      const captainData = {
+        fullname: {
+          firstname: firstName,
+          lastname: lastName
         },
         email: email,
         password: password,
-      });
+        vehicle: {
+          color: vehicleColor,
+          plate: vehiclePlate,
+          capasity: vehicleCapacity,
+          vehicleType: vehicleType
+        }
+      }
+
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData);
+
+      if(response.status === 201) {
+        const data = response.data;
+        setCaptain(data.captain);
+        localStorage.setItem('token', data.token);
+  
+        navigate('/captain-home');
+      }
   
       setEmail('');
       setPassword('');
       setFirstName('');
       setLastName('');
+      setVehicleColor('');
+      setVehiclePlate('');
+      setVehicleCapacity('');
+      setVehicleType('');
   
     }
   
@@ -35,7 +66,7 @@ const CaptainSignup = () => {
       <img
         src="/uber-logo.png"
         alt=""
-        className="w-28 ml-[-20px] mt-[-20px] mb-10"
+        className="w-28 ml-[-20px] mt-[-20px]"
       />
       <form onSubmit={ (e) => submitHandler(e) }>
         <h3 className="text-lg font-medium mb-2">What's your Name</h3>
@@ -78,12 +109,55 @@ const CaptainSignup = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        <h3 className="text-lg font-medium mb-2">Vehicle Information</h3>
+        <div className="flex gap-4">
+          <select
+            className="bg-[#eeeeee] mb-3 rounded px-4 py-2 border w-1/2 text-lg placeholder:text-base"
+            required
+            value={vehicleType}
+            onChange={(e) => setVehicleType(e.target.value)}
+          >
+            <option value="" disabled>Vehicle Type</option>
+            <option value="car">Car</option>
+            <option value="auto">Auto</option>
+            <option value="moto">Moto</option>
+          </select>
+          <input
+            className="bg-[#eeeeee] mb-3 rounded px-4 py-2 border w-1/2 text-lg placeholder:text-base"
+            required
+            type="number"
+            placeholder="Vehicle Capacity"
+            value={vehicleCapacity}
+            onChange={(e) => setVehicleCapacity(e.target.value)}
+            />
+        </div>
+        <div className="flex gap-4 mb-7">
+            <input
+              className="bg-[#eeeeee] mb-3 rounded px-4 py-2 border w-1/2 text-lg placeholder:text-base"
+              required
+              type="text"
+              placeholder="Vehicle Plate"
+              value={vehiclePlate}
+              onChange={(e) => setVehiclePlate(e.target.value)}
+              />
+            <input
+              className="bg-[#eeeeee] mb-3 rounded px-4 py-2 border w-1/2 text-lg placeholder:text-base"
+              required
+              type="text"
+              placeholder="Vehicle Color"
+              value={vehicleColor}
+              onChange={(e) => setVehicleColor(e.target.value)}
+              />
+        </div>
+
+
         <button className="bg-[#111] text-white font-semibold mb-2 rounded px-4 py-2 w-full text-lg placeholder:text-base">
           Sign up as Captain
         </button>
       </form>
-      <p className="text-center">
-      Have an account?{" "}
+      <p className="text-center mb-3">
+      Have an account?
         <Link to={"/captain-login"} className="text-[#026ae9]">
           Login here
         </Link>
