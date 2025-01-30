@@ -3,6 +3,8 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../Components/LocationSearchPanel'
+import VehiclePanel from '../Components/VehiclePanel'
+import ConfirmedRide from '../Components/ConfirmedRide'
 
 
 const Home = () => {
@@ -11,6 +13,10 @@ const Home = () => {
   const [panelOpen, setPanelOpen] = useState(false)
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
+  const vehiclePanelRef = useRef(null)
+  const confirmedRideRef = useRef(null)
+  const [vehiclePanelOpen, setVehiclePanelOpen] = useState(false)
+  const [confirmedRidePanle, setConfirmedRidePanle] = useState(false)
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -43,6 +49,33 @@ const Home = () => {
       })
     }
     }, [panelOpen, panelCloseRef])
+
+
+  useGSAP( () => {
+    if(vehiclePanelOpen){
+
+      gsap.to( vehiclePanelRef.current, {
+        transform: 'translateY(0)',
+      })
+    } else {
+      gsap.to( vehiclePanelRef.current, {
+        transform: 'translateY(100%)',
+      })
+    }
+  }, [vehiclePanelOpen, vehiclePanelRef])
+
+  useGSAP( () => {
+    if(confirmedRidePanle){
+
+      gsap.to( confirmedRideRef.current, {
+        transform: 'translateY(0)',
+      })
+    } else {
+      gsap.to( confirmedRideRef.current, {
+        transform: 'translateY(100%)',
+      })
+    }
+  }, [confirmedRidePanle, confirmedRideRef])
 
   return (
     <div className='h-screen w-screen relative overflow-hidden'>
@@ -80,41 +113,14 @@ const Home = () => {
           </form>
         </div>
         <div ref={panelRef} className='h-[0] bg-white'>
-          <LocationSearchPanel />
+          <LocationSearchPanel  setPanelOpen={setPanelOpen} setVehiclePanelOpen={setVehiclePanelOpen} />
         </div>
       </div>
-      <div className='fixed z-10 translate-y-full bg-white bottom-0 px-3 py-8 w-full'>
-        <h3 className='text-2xl font-semibold mb-4'>Choose a Vehicle</h3>
-
-        <div className='flex mb-3 border-2 active:border-black bg-gray-100 items-center justify-between p-3 rounded-xl w-full '>
-          <img className='h-14' src="./uber-car-img.webp" alt="" />
-          <div >
-            <h4 className='font-medium text-base'>UberGo <span><i class="ri-user-3-fill"></i>4</span></h4>
-            <h5 className='font-medium text-sm'>2 min away</h5>
-            <p className='font-normal text-xs text-gray-600'>Affordable, compact rides </p>
-          </div>
-          <h2 className='font-semibold text-lg'>₹199</h2>
-        </div>
-
-        <div className='flex mb-3 border-2 active:border-black bg-gray-100 items-center justify-between p-3 rounded-xl w-full '>
-          <img className='h-10' src="./uber-moto-img.webp" alt="" />
-          <div >
-            <h4 className='font-medium text-base'>Moto <span><i class="ri-user-3-fill"></i>1</span></h4>
-            <h5 className='font-medium text-sm'>1 min away</h5>
-            <p className='font-normal text-xs text-gray-600'>Affordable, motercycle ride </p>
-          </div>
-          <h2 className='font-semibold text-lg'>₹49</h2>
-        </div>
-
-        <div className='flex mb-3 border-2 active:border-black bg-gray-100 items-center justify-between p-3 rounded-xl w-full '>
-          <img className='h-10' src="./uber-auto-img.webp" alt="" />
-          <div className='-ml-7' >
-            <h4 className='font-medium text-base'>UberAuto <span><i class="ri-user-3-fill"></i>3</span></h4>
-            <h5 className='font-medium text-sm'>3 min away</h5>
-            <p className='font-normal text-xs text-gray-600'>Affordable, Auto ride </p>
-          </div>
-          <h2 className='font-semibold text-lg'>₹79</h2>
-        </div>
+      <div ref={vehiclePanelRef} className='fixed z-10 translate-y-full bg-white bottom-0 px-3 py-8 w-full rounded-t-3xl'>
+          <VehiclePanel setConfirmedRidePanle={setConfirmedRidePanle} setVehiclePanelOpen={setVehiclePanelOpen} />
+      </div>
+      <div ref={confirmedRideRef} className='fixed z-10 translate-y-full bg-white bottom-0 pt-12 px-3 py-8 w-full rounded-t-3xl'>
+          <ConfirmedRide />
       </div>
     </div>
   )
