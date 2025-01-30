@@ -1,10 +1,10 @@
 import React from 'react'
 
-const ConfirmedRide = (props    ) => {
+const ConfirmedRide = (props) => {
   return (
     <div>
         <h5 onClick={() => 
-        props.setVehiclePanelOpen(false)
+        props.setConfirmedRidePanle(false)
         } className='p-3 text-center absolute top-2 right-2 text-2xl text-gray-600'><i className="ri-arrow-down-wide-line"></i></h5>
         <h3 className='text-2xl font-semibold mb-4'>Confirm your Ride</h3>
 
@@ -34,7 +34,10 @@ const ConfirmedRide = (props    ) => {
                 </div>
             </div>
             <div className='w-full'>
-                <button className='w-full mt-5 bg-green-500 text-white font-semibold p-2 rounded-xl'>Confirm</button>
+                <button onClick={() => {
+                    props.setVehicleFound(true)
+                    props.setConfirmedRidePanle(false)
+                } } className='w-full mt-5 bg-green-500 text-white font-semibold p-2 rounded-xl'>Confirm</button>
             </div>
         </div>
     </div>
